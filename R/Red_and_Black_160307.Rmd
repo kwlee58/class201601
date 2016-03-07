@@ -5,6 +5,8 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+### Setup
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # install.packages("pander", repos = "https://cran.rstudio.com")
@@ -15,8 +17,10 @@ library(knitr)
 panderOptions('table.split.table', Inf)
 ```
 
+### Data Randomization
+
 ```{r, data}
-class_roll <- read.xlsx("../data/class_roll0307.xlsx", 1, startRow = 2, endRow = 67, colIndex = c(3:7, 9), colClasses=rep("character", 6), stringsAsFactors = FALSE)
+class_roll <- read.xlsx("../data/class_roll0306.xlsx", 1, startRow = 2, endRow = 67, colIndex = c(3:7, 9), colClasses=rep("character", 6), stringsAsFactors = FALSE)
 str(class_roll)
 names(class_roll) <- c("dept", "id", "name", "year", "e.mail", "cell.no")
 str(class_roll)
@@ -31,8 +35,14 @@ class_roll$group <- factor(ifelse((1:N) %in% red.id, "red", "black"), levels = c
 black.id<-(1:N)[-red.id]
 ```
 
-```{r, id}
+### Randomization Effects
 
+```{r, colleges}
+#pander(class_roll)
+#table("단과대학" = class_roll$college, "그룹" = class_roll$group)
+```
+
+```{r, id}
 ID.15<-factor(ifelse(substr(class_roll$id, 1, 4) >= 2015, "younger.15", "older.15"), levels=c("younger.15", "older.15"))
 pander(table("15학번 기준" = ID.15, "그룹" = class_roll$group))
 ID.14<-factor(ifelse(substr(class_roll$id, 1, 4) >= 2014, "younger.14", "older.14"), levels=c("younger.14", "older.14"))
@@ -45,26 +55,31 @@ pander(table("12학번 기준" = ID.12, "그룹" = class_roll$group))
 
 ```{r, odd or even}
 odd.even <- as.numeric(class_roll$id) %% 2
-pander(table("odd_even" = odd.even, "Group"= class_roll$group))
+odd.even.f <- factor(odd.even, levels=c(1, 0), labels = c("홀수", "짝수"))
+pander(table("홀짝" = odd.even.f, "Group"= class_roll$group))
+# kable(table("홀짝" = odd.even.f, "Group"= class_roll$group))
+```
+
+```{r, name}
+f.name <- substring(class_roll$name, first = 1, last = 1)
+# f.name %in% c("김","이","박")
+f.name.f <- factor(ifelse(f.name %in% c("김", "이", "박"), f.name, "기타"), levels=c("김", "이", "박", "기타"))
+pander(table("Family Name" = f.name.f, "Group" = class_roll$group))
+```
+
+```{r, year}
+year.f <- factor(class_roll$year, labels = c("1학년", "2학년", "3학년", "4학년"))
+pander(table("학년" = year.f, "Group" = class_roll$group))
 ```
 
 ```{r, e_mail}
 e.mail.list <- strsplit(class_roll$e.mail, "@", fixed = TRUE)
 mail.com <- mapply("[", e.mail.list, 2)
-pander(table("e-mail" = mail.com, "그룹" = class_roll$group))
+mail.com.f <- factor(ifelse(mail.com == "naver.com", "네이버", "기타서비스"), levels = c("네이버", "기타서비스"))
+pander(table("e-mail" = mail.com.f, "그룹" = class_roll$group))
 ```
 
-```{r, name}
-f.name <- substring(class_roll$name, first = 1, last = 1)
-# f.name %in% c("김","이","박"  )
-f.name.f <- factor(ifelse(f.name %in% c("김", "이", "박"), f.name, "기타"), levels=c("김", "이", "박", "기타"))
-pander(table("Family Name" = f.name.f, "Group" = class_roll$group))
-```
-
-```{r, colleges}
-pander(class_roll)
-#table("단과대학" = class_roll$college, "그룹" = class_roll$group)
-```
+### Roll Divided
 
 ```{r, list}
 gr.id.o <- order(class_roll$group, class_roll$id)
