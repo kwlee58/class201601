@@ -1,11 +1,9 @@
 ---
-title: "Red_and_Black_160307"
+title: "Red_and_Black_160308"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
 ---
-
-### Setup
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -20,7 +18,7 @@ panderOptions('table.split.table', Inf)
 ### Data Randomization
 
 ```{r, data}
-class_roll <- read.xlsx("../data/class_roll0306.xlsx", 1, startRow = 2, endRow = 66, colIndex = c(3:7, 9), colClasses=rep("character", 6), stringsAsFactors = FALSE)
+class_roll <- read.xlsx("../data/class_roll0308.xlsx", 1, startRow = 2, endRow = 66, colIndex = c(3:7, 9), colClasses=rep("character", 6), stringsAsFactors = FALSE)
 str(class_roll)
 names(class_roll) <- c("dept", "id", "name", "year", "e.mail", "cell.no")
 str(class_roll)
@@ -81,7 +79,7 @@ pander(table("e-mail" = mail.com.f, "그룹" = class_roll$group))
 
 ### Roll Divided
 
-```{r, list}
+```{r, list, echo=FALSE, message=FALSE, results='hide'}
 gr.id.o <- order(class_roll$group, class_roll$id)
 id.by.gr <- class_roll[gr.id.o, c("group", "id", "name")]
 red.names <- id.by.gr[id.by.gr$group=="red", c("id", "name")]
@@ -95,10 +93,13 @@ pander(black.names)
 red.black.df <- data.frame("Red" = red.names, "Black" = black.names, row.names = NULL)
 # names(red.black.df) <- c("Red", "Black")
 # pander(red.black.list)
-pander(red.black.df)
 # kable(red.black.df, align = c("c", "c", "c", "c"))
 ```
 
-```{r, save}
+```{r, print_out, echo=FALSE}
+pander(red.black.df)
+```
+
+```{r, save, echo=FALSE, message=FALSE, results='hide'}
 save.image("../R/red_and_black_160308_data.rda")
 ```
