@@ -1,5 +1,5 @@
 ---
-title: "Randomization Effects 160309(in Korean)"
+title: "Red and Black experiment 160309(in Korean)"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
