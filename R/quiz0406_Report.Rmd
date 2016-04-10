@@ -25,7 +25,7 @@ names(quiz0406) <- c("dept", "id", "name", "year", "e.mail", "cell.no", "E1", "E
 quiz0406$dept <- factor(quiz0406$dept)
 quiz0406$year <- factor(quiz0406$year)
 quiz0406$group <- factor(quiz0406$group, levels = c("Red", "Black"))
-quiz0406$Q1 <- factor(quiz0406$Q1, levels = c("1", "2", "3", "4", "5", "6"), labels = c("새누리당", "더불어민주당", "국민의당", "정의당", "기타정당", "없거나 모르겠다"))
+quiz0406$Q1 <- factor(quiz0406$Q1, levels = c("1", "2", "3", "4", "5", "6"), labels = c("I", "II", "III", "IV", "기타정당", "없거나 모르겠다"))
 quiz0406$Q2 <- factor(quiz0406$Q2, levels = c("1", "2", "3", "4", "5"), labels = c("잘하는 편이다", "매우 잘하고 있다", "잘못하는 편이다", "매우 잘못하고 있다", "잘모르겠다"))
 quiz0406$Q3A <- factor(quiz0406$Q3A, levels = 1:14, labels = c(LETTERS[1:13], "기타 또는 없다"))
 quiz0406$Q3B.2 <- quiz0406$Q3B
@@ -74,15 +74,23 @@ pander(addmargins(table(quiz0406$group, quiz0406$Q3A, exclude = NULL), margin=1)
 #### Q3A. 여야 차기 대선후보 지지도(%)
 
 ```{r, next president in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0406$group, quiz0406$Q3A, exclude = NULL), margin = 1), margin = 1)[4,]*100, digits = 1), caption = "Quota Sampling")
+pander(round(prop.table(addmargins(table(quiz0406$group, quiz0406$Q3A, exclude = NULL), margin = 1), margin = 1)[4,]*100, digits = 1), caption = "후보 지지도")
 ```
 
-### Q3B. Black 만 문항 순서를 바꾸었을 때
+#### Q3B. Black 만 문항 순서를 바꾸었을 때
 
-##### Black은 Q3A에서 순서만 바꾼 것인데 답이 다르게 나옴. Q3A와 Q3B의 Black만 비교해 볼 것
+##### Black은 Q3A에서 순서만 바꾼 것인데 답이 다르게 나옴. 
 
 ```{r, order change, echo = FALSE}
 pander(table(quiz0406$group, quiz0406$Q3B.2, exclude = NULL), caption="후보지지도")
+```
+
+##### Q3A와 Q3B의 Black만 비교
+
+```{r, black and black, echo = FALSE}
+black.black <- rbind(table(quiz0406$group, quiz0406$Q3A, exclude = NULL)[2, ], table(quiz0406$group, quiz0406$Q3B.2, exclude = NULL)[2, ])
+row.names(black.black) <- c("Black(Q3A)", "Black(Q3B)")
+pander(addmargins(black.black, margin = 2))
 ```
 
 #### Q4. 투표의향
