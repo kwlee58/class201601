@@ -1,5 +1,5 @@
 ---
-title: "Quiz 160406"
+title: "Quiz 160406v2"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
@@ -19,7 +19,7 @@ options(width = 180)
 ```
 
 ```{r, data, echo = FALSE, results = 'hide'}
-quiz0406 <- read.xlsx("../data/quiz0406.xlsx", 1, startRow = 3, endRow = 67, colIndex = c(3:7, 9:20), colClasses = c(rep("character", 11)), stringsAsFactors = FALSE)
+quiz0406 <- read.xlsx("../data/quiz0406v2.xlsx", 1, startRow = 3, endRow = 67, colIndex = c(3:7, 9:20), colClasses = c(rep("character", 11)), stringsAsFactors = FALSE)
 str(quiz0406)
 names(quiz0406) <- c("dept", "id", "name", "year", "e.mail", "cell.no", "E1", "E2", "E3", "Q1", "Q2", "Q3A", "Q3B", "Q4", "E4", "E5", "group")
 quiz0406$dept <- factor(quiz0406$dept)
