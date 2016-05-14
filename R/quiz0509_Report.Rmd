@@ -60,13 +60,16 @@ pander(summary(quiz0509))
 ##### Randomization
 
 ```{r, randomized placebo control approach, echo = FALSE}
-pander(addmargins(table(quiz0509$group, quiz0509$Q1, exclude = NULL), margin = 1))
+tbl.q1.a <- addmargins(table(quiz0509$group, quiz0509$Q1, useNA = "ifany"), margin = 1) 
+pander(tbl.q1.a, caption = "랜덤화")
 ```
 
 ##### Randomization (%)
 
 ```{r, randomized placebo control approach in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0509$group, quiz0509$Q1, exclude = NULL), margin = 1), margin = 1)[4,]*100, digits = 1))
+percentage.tbl.q1.a <- addmargins(round(prop.table(tbl.q1.a[, -5], margin = 1)*100, digits = 1))[3, ]
+names(percentage.tbl.q1.a)[5] <- "계"
+pander(percentage.tbl.q1.a, "랜덤화")
 ```
 
 #### Clear Evidence of Vaccine Effects
@@ -74,13 +77,16 @@ pander(round(prop.table(addmargins(table(quiz0509$group, quiz0509$Q1, exclude = 
 ##### Treatment vs Control
 
 ```{r, Treatment vs Control, echo = FALSE}
-pander(addmargins(table(quiz0509$group, quiz0509$Q2, exclude = NULL), margin = 1))
+tbl.q2.a <- addmargins(table(quiz0509$group, quiz0509$Q2, useNA = "ifany"), margin = 1)
+pander(tbl.q2.a)
 ```
 
 ##### Treatment vs Control (%)
 
 ```{r, opposite in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0509$group, quiz0509$Q2, exclude = NULL), margin = 1), margin = 1)[4,]*100, digits = 1), caption = "쏘오크 예방주사의 효과")
+percentage.tbl.q2.a <- addmargins(round(prop.table(tbl.q2.a[, -5], margin = 1)*100, digits = 1))[3, ]
+names(percentage.tbl.q2.a)[5] <- "계"
+pander(percentage.tbl.q2.a, caption = "쏘오크 예방주사의 효과")
 ```
 
 ### Wason Selection
@@ -92,30 +98,57 @@ pander(round(prop.table(addmargins(table(quiz0509$group, quiz0509$Q2, exclude = 
 ##### Red에 추상적 문제 먼저 질문 
 
 ```{r, Wason Selection 1 in Red, echo = FALSE}
-merge.tbl <- table(quiz0509$group, quiz0509$Q3.2)
-rownames(merge.tbl) <- c("Red(추상적 질문 먼저)", "Black(구체적 질문 먼저)") 
-kable(table(quiz0509$group, quiz0509$Q3.2, exclude = NULL), caption = "Wason Selection 1 in red")
+tbl.q3.a <- addmargins(table(quiz0509$group, quiz0509$Q3.2, useNA = "ifany"), margin = 1)
+rownames(tbl.q3.a) <- c("Red(추상적 질문 먼저)", "Black(구체적 질문 먼저)", "계") 
+# tbl.q3.a <- addmargins(tbl.q3, margin = 1)
+kable(tbl.q3.a, caption = "Wason Selection 1 in red")
 ```
 
-##### % 비교.  
+##### % 비교  
 
 ```{r, Wason Selection 1 in Red in percentage, echo = FALSE}
-kable(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
+percentage.tbl.q3.a <- addmargins(round(prop.table(tbl.q3.a[, -3], margin = 1)*100, digits = 1))[1:2, ]
+colnames(percentage.tbl.q3.a) <- c("정답", "오답", "계")
+kable(percentage.tbl.q3.a, caption = "Wason Selection 1 in red")
 ```
 
 ##### Black에 추상적 문제 먼저 질문 
 
 ```{r, Wason Selection 1 in Black, echo = FALSE}
-merge.tbl.2 <- table(quiz0509$group, quiz0509$Q4.2)
-rownames(merge.tbl.2) <- c("Red(구체적 질문 먼저)", "Black(추상적 질문 먼저)")
-kable(table(quiz0509$group, quiz0509$Q4.2, exclude = NULL), caption = "Wason Selection 1 in Black")
+tbl.q4.a <- addmargins(table(quiz0509$group, quiz0509$Q4.2, useNA = "ifany"), margin = 1)
+rownames(tbl.q4.a) <- c("Red(구체적 질문 먼저)", "Black(추상적 질문 먼저)", "계")
+kable(tbl.q4.a, caption = "Wason Selection 1 in Black")
 ```
 
 ##### % 비교.  
 
 ```{r, Wason Selection 1 in Black in percentage, echo = FALSE}
-kable(round(prop.table(merge.tbl.2, margin = 1)*100, digits = 1))
+percentage.tbl.q4.a <- addmargins(round(prop.table(tbl.q4.a[, -3], margin = 1)*100, digits = 1))[1:2, ]
+colnames(percentage.tbl.q4.a) <- c("정답", "오답", "계")
+kable(percentage.tbl.q4.a, caption = "Wason Selection 1 in Black")
 ```
+
+#### 합산
+
+##### 집계표
+
+```{r, Wason Selection, echo = FALSE}
+wason_1 <- tbl.q3.a[1, ] + tbl.q4.a[2, ]
+wason_2 <- tbl.q3.a[2, ] + tbl.q4.a[1, ]
+wason.tbl <- as.table(rbind(wason_1, wason_2))
+rownames(wason.tbl) <- c("Wason 1(추상적 질문)", "Wason 2(구체적 질문)")
+kable(wason.tbl, caption = "Wason Selection")
+```
+
+##### % 비교
+
+```{r, Wason Selection in percentage, echo = FALSE}
+wason.tbl.p.a <- addmargins(round(prop.table(wason.tbl[, -3], margin = 1)*100, digits = 1))[1:2, ]
+colnames(wason.tbl.p.a) <- c("정답", "오답", "계")
+kable(wason.tbl.p.a, caption = "Wason Selection")
+```
+
+
 
 ```{r, save, echo = FALSE}
 #save.image("../R/quiz0509.rda")
