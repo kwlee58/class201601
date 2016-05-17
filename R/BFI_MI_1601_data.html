@@ -120,7 +120,7 @@ $(document).ready(function () {
 <pre class="r"><code>library(xlsx)</code></pre>
 <pre><code>## Loading required package: rJava</code></pre>
 <pre><code>## Loading required package: xlsxjars</code></pre>
-<pre class="r"><code>options(width=180)
+<pre class="r"><code>options(width = 180)
 BFI &lt;- read.xlsx(&quot;../data/BFI_MI_0511.xlsx&quot;, sheetIndex = 1, startRow = 3, endRow = 66, colIndex = c(4:5, 10:21), header = FALSE)
 names(BFI) &lt;- c(&quot;ID&quot;, &quot;Name&quot;, &quot;E1&quot;, &quot;A1&quot;, &quot;O1&quot;, &quot;C1&quot;, &quot;N1&quot;, &quot;E2&quot;, &quot;A2&quot;, &quot;O2&quot;, &quot;C2&quot;, &quot;N2&quot;, &quot;O3&quot;, &quot;A3&quot;)
 pander(BFI)</code></pre>

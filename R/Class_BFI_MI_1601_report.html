@@ -11,6 +11,7 @@
 
 <meta name="author" content="coop711" />
 
+<meta name="date" content="2016-05-16" />
 
 <title>Class_BFI_MI</title>
 
@@ -110,13 +111,13 @@ $(document).ready(function () {
 
 <h1 class="title">Class_BFI_MI</h1>
 <h4 class="author"><em>coop711</em></h4>
-<h4 class="date"><em>2015년 6월 2일</em></h4>
+<h4 class="date"><em>2016-05-16</em></h4>
 
 </div>
 
 
-<div id="data-reading" class="section level2">
-<h2>Data Reading</h2>
+<div id="data-reading" class="section level3">
+<h3>Data Reading</h3>
 <p><code>join()</code>을 사용하기 위하여 <code>plyr</code> 패키지는 사전에 등록</p>
 <pre class="r"><code>library(knitr)
 library(pander)
@@ -124,9 +125,8 @@ library(plyr)
 panderOptions(&quot;table.split.table&quot;, Inf)</code></pre>
 <p>필수 자료 읽어들이기</p>
 <pre class="r"><code>load(&quot;./BFI_MI_1601.rda&quot;)
-ls()</code></pre>
-<pre><code>## [1] &quot;BFI&quot;        &quot;class.roll&quot; &quot;MI&quot;</code></pre>
-<pre class="r"><code>str(BFI)</code></pre>
+# ls()
+str(BFI)</code></pre>
 <pre><code>## 'data.frame':    64 obs. of  14 variables:
 ##  $ ID  : num  20143703 20152202 20125104 20122807 20122809 ...
 ##  $ Name: chr  &quot;고은비&quot; &quot;구현회&quot; &quot;권용현&quot; &quot;금도영&quot; ...
@@ -206,22 +206,27 @@ ls()</code></pre>
 <pre><code>## 'data.frame':    64 obs. of  2 variables:
 ##  $ ID  : num  20143703 20152202 20125104 20122807 20122809 ...
 ##  $ Name: chr  &quot;고은비&quot; &quot;구현회&quot; &quot;권용현&quot; &quot;금도영&quot; ...</code></pre>
-<pre class="r"><code>options(width=180)</code></pre>
+<pre class="r"><code>options(width = 180)</code></pre>
 </div>
-<div id="big-five-inventory-first" class="section level2">
-<h2>Big Five Inventory First</h2>
+<div id="big-five-inventory-first" class="section level3">
+<h3>Big Five Inventory First</h3>
 <p>계산의 편의를 돕기 위해 <code>BFI</code> 자료를 검색 목록에 등록하고, 점수 합산.</p>
-<pre class="r"><code>attach(BFI)
-E.score&lt;-E1+E2
-N.score&lt;-N1+N2
-C.score&lt;-C1+C2
-A.score&lt;-A1+A2+A3
-O.score&lt;-O1+O2+O3</code></pre>
+<pre class="r"><code># attach(BFI)
+# E.score &lt;- E1 + E2
+# N.score &lt;- N1 + N2
+# C.score &lt;- C1 + C2
+# A.score &lt;- A1 + A2 + A3
+# O.score &lt;- O1 + O2 + O3</code></pre>
 <p>data frame으로 정리하고, 한글 명칭 부여</p>
-<pre class="r"><code>BFI.score&lt;-data.frame(E.score, N.score, C.score, A.score, O.score)
-BFI.type.kr&lt;-c(&quot;외향성&quot;, &quot;신경성&quot;, &quot;성실성&quot;, &quot;친화성&quot;, &quot;개방성&quot;)
-dimnames(BFI.score)&lt;-list(ID = ID, BFI.type.kr)
-pander(BFI.score)</code></pre>
+<pre class="r"><code>BFI.data &lt;- BFI[, -(1:2)]
+abb.BFI &lt;- c(&quot;E&quot;, &quot;N&quot;, &quot;C&quot;, &quot;A&quot;, &quot;O&quot;)
+BFI.score &lt;- data.frame(mapply(function(x) apply(BFI.data[, substr(names(BFI.data), 1, 1) == x], 1, sum), abb.BFI))
+# BFI.score &lt;- data.frame(E.score, N.score, C.score, A.score, O.score)
+names(BFI.score) &lt;- c(&quot;E.score&quot;, &quot;N.score&quot;, &quot;C.score&quot;, &quot;A.score&quot;, &quot;O.score&quot;)
+BFI.type.kr &lt;- c(&quot;외향성&quot;, &quot;신경성&quot;, &quot;성실성&quot;, &quot;친화성&quot;, &quot;개방성&quot;)
+BFI.score.kr &lt;- BFI.score
+dimnames(BFI.score.kr) &lt;- list(ID = BFI$ID, BFI.type.kr)
+pander(BFI.score.kr)</code></pre>
 <table style="width:83%;">
 <colgroup>
 <col width="20%"></col>
@@ -757,15 +762,16 @@ pander(BFI.score)</code></pre>
 </tbody>
 </table>
 <p>점수에 따른 수준 판정</p>
-<pre class="r"><code>E.level.kr&lt;-ifelse(E.score &lt;= 4, &quot;하&quot;, ifelse(E.score &lt;=6, &quot;중하&quot;, ifelse(E.score &lt;=8, &quot;중상&quot;, &quot;상&quot;)))
-N.level.kr&lt;-ifelse(N.score &lt;= 4, &quot;하&quot;, ifelse(N.score &lt;=6, &quot;중하&quot;, ifelse(N.score &lt;=8, &quot;중상&quot;, &quot;상&quot;)))
-C.level.kr&lt;-ifelse(C.score &lt;= 4, &quot;하&quot;, ifelse(C.score &lt;=6, &quot;중하&quot;, ifelse(C.score &lt;=8, &quot;중상&quot;, &quot;상&quot;)))
-A.level.kr&lt;-ifelse(A.score &lt;= 10, &quot;하&quot;, ifelse(A.score &lt;=12, &quot;중하&quot;, ifelse(A.score &lt;=13, &quot;중상&quot;, &quot;상&quot;)))
-O.level.kr&lt;-ifelse(O.score &lt;= 8, &quot;하&quot;, ifelse(O.score &lt;=10, &quot;중하&quot;, ifelse(O.score &lt;=12, &quot;중상&quot;, &quot;상&quot;)))</code></pre>
+<pre class="r"><code>attach(BFI.score)
+E.level.kr &lt;- ifelse(E.score &lt;= 4, &quot;하&quot;, ifelse(E.score &lt;= 6, &quot;중하&quot;, ifelse(E.score &lt;= 8, &quot;중상&quot;, &quot;상&quot;)))
+N.level.kr &lt;- ifelse(N.score &lt;= 4, &quot;하&quot;, ifelse(N.score &lt;= 6, &quot;중하&quot;, ifelse(N.score &lt;= 8, &quot;중상&quot;, &quot;상&quot;)))
+C.level.kr &lt;- ifelse(C.score &lt;= 4, &quot;하&quot;, ifelse(C.score &lt;= 6, &quot;중하&quot;, ifelse(C.score &lt;= 8, &quot;중상&quot;, &quot;상&quot;)))
+A.level.kr &lt;- ifelse(A.score &lt;= 10, &quot;하&quot;, ifelse(A.score &lt;= 12, &quot;중하&quot;, ifelse(A.score &lt;= 13, &quot;중상&quot;, &quot;상&quot;)))
+O.level.kr &lt;- ifelse(O.score &lt;= 8, &quot;하&quot;, ifelse(O.score &lt;= 10, &quot;중하&quot;, ifelse(O.score &lt;= 12, &quot;중상&quot;, &quot;상&quot;)))</code></pre>
 <p>ordered factor 로 구성된 data frame 으로 정리</p>
-<pre class="r"><code>BFI.level&lt;-data.frame(E.level.kr, N.level.kr, C.level.kr, A.level.kr, O.level.kr)
-BFI.level.kr&lt;-data.frame(lapply(BFI.level, function(x) factor(x, levels=c(&quot;하&quot;, &quot;중하&quot;, &quot;중상&quot;, &quot;상&quot;), ordered=TRUE)))
-dimnames(BFI.level.kr)&lt;-list(ID = ID, BFI.type.kr)
+<pre class="r"><code>BFI.level &lt;- data.frame(E.level.kr, N.level.kr, C.level.kr, A.level.kr, O.level.kr)
+BFI.level.kr &lt;- data.frame(lapply(BFI.level, function(x) factor(x, levels=c(&quot;하&quot;, &quot;중하&quot;, &quot;중상&quot;, &quot;상&quot;), ordered = TRUE)))
+dimnames(BFI.level.kr) &lt;- list(ID = BFI$ID, BFI.type.kr)
 pander(BFI.level.kr)</code></pre>
 <table style="width:83%;">
 <colgroup>
@@ -1302,19 +1308,18 @@ pander(BFI.level.kr)</code></pre>
 </tbody>
 </table>
 <p>위 과정은 다음과 같이 사용자 함수와 <code>mapply()</code>를 이용하여 다소 줄일 수도 있다.</p>
-<pre class="r"><code>criteria&lt;-function(x, a=c(4, 6, 8)){
-  ifelse(x&lt;=a[1], &quot;하&quot;, ifelse(x&lt;=a[2], &quot;중하&quot;, ifelse(x&lt;=a[3], &quot;중상&quot;, &quot;상&quot;)))
+<pre class="r"><code>criteria &lt;- function(x, a = c(4, 6, 8)){
+  ifelse(x &lt;= a[1], &quot;하&quot;, ifelse(x &lt;= a[2], &quot;중하&quot;, ifelse(x &lt;= a[3], &quot;중상&quot;, &quot;상&quot;)))
 }
-a&lt;-list(c(4,6,8), c(4,6,8), c(4,6,8), c(10,12,13), c(8,10,12))
-BFI.level.2&lt;-data.frame(mapply(criteria, BFI.score, a=a))
-BFI.level.kr.2&lt;-data.frame(lapply(BFI.level.2, function(x) factor(x, levels=c(&quot;하&quot;, &quot;중하&quot;, &quot;중상&quot;, &quot;상&quot;), ordered=TRUE)))
-dimnames(BFI.level.kr.2)&lt;-list(ID = ID, BFI.type.kr)
-(BFI.na.id &lt;- which(apply(BFI.level.kr.2, 1, function(x)all(is.na(x)))))</code></pre>
+a &lt;- list(c(4, 6, 8), c(4, 6, 8), c(4, 6, 8), c(10, 12, 13), c(8, 10, 12)) 
+BFI.level.2 &lt;- data.frame(mapply(criteria, BFI.score, a = a))
+BFI.level.kr.2 &lt;- data.frame(lapply(BFI.level.2, function(x) factor(x, levels = c(&quot;하&quot;, &quot;중하&quot;, &quot;중상&quot;, &quot;상&quot;), ordered = TRUE)))
+dimnames(BFI.level.kr.2) &lt;- list(ID = BFI$ID, BFI.type.kr)
+(BFI.na.id &lt;- which(apply(BFI.level.kr.2, 1, function(x) all(is.na(x)))))</code></pre>
 <pre><code>## 20122809 20154204 20154208 20102837 20154237 20123526 20142935 
 ##        5        6       15       19       35       46       59</code></pre>
-<pre class="r"><code>(BFI.ok.id &lt;- setdiff(1:68, BFI.na.id))</code></pre>
-<pre><code>##  [1]  1  2  3  4  7  8  9 10 11 12 13 14 16 17 18 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 36 37 38 39 40 41 42 43 44 45 47 48 49 50 51 52 53 54 55 56 57 58 60 61 62 63 64 65
-## [59] 66 67 68</code></pre>
+<pre class="r"><code>(BFI.ok.id &lt;- setdiff(1:nrow(BFI), BFI.na.id))</code></pre>
+<pre><code>##  [1]  1  2  3  4  7  8  9 10 11 12 13 14 16 17 18 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 36 37 38 39 40 41 42 43 44 45 47 48 49 50 51 52 53 54 55 56 57 58 60 61 62 63 64</code></pre>
 <pre class="r"><code>pander(BFI.level.kr.2)</code></pre>
 <table style="width:83%;">
 <colgroup>
@@ -1851,7 +1856,7 @@ dimnames(BFI.level.kr.2)&lt;-list(ID = ID, BFI.type.kr)
 </tbody>
 </table>
 <p>각 성질의 분포를 <code>table</code>로 요약</p>
-<pre class="r"><code>BFI.level.table&lt;-sapply(BFI.level.kr, table)
+<pre class="r"><code>BFI.level.table &lt;- sapply(BFI.level.kr, table)
 pander(BFI.level.table)</code></pre>
 <table style="width:78%;">
 <colgroup>
@@ -1954,11 +1959,10 @@ pander(BFI.level.table)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="-" class="section level2">
-<h2>출석부에 합치기</h2>
+<div id="-" class="section level4">
+<h4>출석부에 합치기</h4>
 <p><code>rownames</code>으로 되어 있는 학번(<code>ID</code>)을 <code>ID</code>로 돌리고, <code>row.names</code>는 일련번호로 정리</p>
-<pre class="r"><code>BFI.level.kr.2&lt;-data.frame(ID = ID, BFI.level.kr, row.names=1:nrow(BFI.level.kr))
+<pre class="r"><code>BFI.level.kr.2 &lt;- data.frame(ID = BFI$ID, BFI.level.kr, row.names = 1:nrow(BFI.level.kr))
 pander(BFI.level.kr.2)</code></pre>
 <table style="width:75%;">
 <colgroup>
@@ -2495,7 +2499,7 @@ pander(BFI.level.kr.2)</code></pre>
 </tbody>
 </table>
 <p>전체 출석부로 통합하고, 실험에 참여하지 않은 사람들은 <code>&lt;NA&gt;</code>로 표시.</p>
-<pre class="r"><code>BFI.full.kr&lt;-join(class.roll, BFI.level.kr.2, by=&quot;ID&quot;)
+<pre class="r"><code>BFI.full.kr &lt;- join(class.roll, BFI.level.kr.2, by = &quot;ID&quot;)
 pander(BFI.full.kr[, -2])</code></pre>
 <table style="width:75%;">
 <colgroup>
@@ -3032,19 +3036,22 @@ pander(BFI.full.kr[, -2])</code></pre>
 </tbody>
 </table>
 <p>잊지 말고 <code>detach()</code></p>
-<pre class="r"><code>detach(BFI)</code></pre>
+<pre class="r"><code>detach(BFI.score)</code></pre>
 </div>
-<div id="--" class="section level2">
-<h2>다중지능 점수 분석</h2>
+</div>
+<div id="--" class="section level3">
+<h3>다중지능 점수 분석</h3>
 <p>다중지능 점수를 합산하기 위하여 <code>for</code> loop를 활용.</p>
-<pre class="r"><code>A&lt;-matrix(numeric(0), nrow=nrow(MI), ncol=8)
-for(j in 1:8) {A[,j]&lt;-MI[,j+1]
-for(i in 1:6) {
-A[,j]&lt;-A[,j]+MI[, j+i*8]
-}}
-MI.score.kr&lt;-A
-MI.names.kr&lt;-c(&quot;음악&quot;, &quot;신체운동&quot;, &quot;논리수학&quot;, &quot;공간&quot;, &quot;언어&quot;, &quot;인간친화&quot;, &quot;자기성찰&quot;, &quot;자연친화&quot;)
-dimnames(MI.score.kr)&lt;-list(MI$ID, MI.names.kr)
+<pre class="r"><code>A &lt;- matrix(numeric(0), nrow = nrow(MI), ncol = 8)
+for(j in 1:8) {
+  A[, j] &lt;- MI[, j + 1]
+    for(i in 1:6) {
+      A[, j] &lt;- A[, j] + MI[, j + i*8]
+    }
+}
+MI.score.kr &lt;- A
+MI.names.kr &lt;- c(&quot;음악&quot;, &quot;신체운동&quot;, &quot;논리수학&quot;, &quot;공간&quot;, &quot;언어&quot;, &quot;인간친화&quot;, &quot;자기성찰&quot;, &quot;자연친화&quot;)
+dimnames(MI.score.kr) &lt;- list(MI$ID, MI.names.kr)
 pander(MI.score.kr)</code></pre>
 <table>
 <colgroup>
@@ -4429,7 +4436,7 @@ pander(t(MI.order.kr))</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>MI.sort.kr &lt;- matrix(MI.names.kr[MI.order.kr], ncol=8, byrow=TRUE, dimnames=list(MI$ID[MI.ok.id], paste(&quot;제&quot;,1:8,&quot;순위&quot;, sep=&quot;&quot;)))
+<pre class="r"><code>MI.sort.kr &lt;- matrix(MI.names.kr[MI.order.kr], ncol = 8, byrow = TRUE, dimnames = list(MI$ID[MI.ok.id], paste(&quot;제&quot;, 1:8, &quot;순위&quot;, sep = &quot;&quot;)))
 pander(MI.sort.kr)</code></pre>
 <table>
 <colgroup>
@@ -5086,11 +5093,10 @@ pander(MI.sort.kr)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="--1" class="section level2">
-<h2>출석부에 합치기</h2>
+<div id="--1" class="section level4">
+<h4>출석부에 합치기</h4>
 <p><code>rownames</code>를 <code>ID</code>로 돌리고, <code>row.names</code>는 일련번호로 정리</p>
-<pre class="r"><code>MI.sort.kr.2&lt;-data.frame(ID = MI$ID[MI.ok.id], MI.sort.kr, row.names=1:nrow(MI.sort.kr))
+<pre class="r"><code>MI.sort.kr.2 &lt;- data.frame(ID = MI$ID[MI.ok.id], MI.sort.kr, row.names = 1:nrow(MI.sort.kr))
 pander(MI.sort.kr.2)</code></pre>
 <table style="width:100%;">
 <colgroup>
@@ -5748,7 +5754,7 @@ pander(MI.sort.kr.2)</code></pre>
 </tbody>
 </table>
 <p>출석부에 통합</p>
-<pre class="r"><code>MI.sort.full.kr&lt;-join(class.roll, MI.sort.kr.2, by=&quot;ID&quot;)
+<pre class="r"><code>MI.sort.full.kr &lt;- join(class.roll, MI.sort.kr.2, by = &quot;ID&quot;)
 pander(MI.sort.full.kr[, -2])</code></pre>
 <table style="width:100%;">
 <colgroup>
@@ -6483,745 +6489,14 @@ pander(MI.sort.full.kr[, -2])</code></pre>
 </tbody>
 </table>
 </div>
-<div id="-data-frame-" class="section level2">
-<h2>두 data frame을 하나로</h2>
+</div>
+<div id="-data-frame-" class="section level3">
+<h3>두 data frame을 하나로</h3>
 <p>Merge 2 data frames into one</p>
-<pre class="r"><code>BFI.MI.full&lt;-data.frame(BFI.full.kr, MI.sort.full.kr[, 3:5])
-pander(BFI.MI.full[, -2])</code></pre>
-<table>
-<colgroup>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="11%"></col>
-<col width="11%"></col>
-<col width="11%"></col>
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">ID</th>
-<th align="center">외향성</th>
-<th align="center">신경성</th>
-<th align="center">성실성</th>
-<th align="center">친화성</th>
-<th align="center">개방성</th>
-<th align="center">제1순위</th>
-<th align="center">제2순위</th>
-<th align="center">제3순위</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">20143703</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20152202</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20125104</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">공간</td>
-<td align="center">언어</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="even">
-<td align="center">20122807</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">논리수학</td>
-<td align="center">공간</td>
-<td align="center">인간친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20122809</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">20154204</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="odd">
-<td align="center">20155106</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20155107</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20125109</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">신체운동</td>
-</tr>
-<tr class="even">
-<td align="center">20162822</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">신체운동</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="odd">
-<td align="center">20102711</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">논리수학</td>
-<td align="center">언어</td>
-</tr>
-<tr class="even">
-<td align="center">20162823</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20151605</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">자연친화</td>
-<td align="center">공간</td>
-</tr>
-<tr class="even">
-<td align="center">20122828</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20154208</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">20123607</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20123507</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">신체운동</td>
-<td align="center">공간</td>
-</tr>
-<tr class="even">
-<td align="center">20162407</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-<td align="center">논리수학</td>
-</tr>
-<tr class="odd">
-<td align="center">20102837</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">20154212</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20141119</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-</tr>
-<tr class="even">
-<td align="center">20166231</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">신체운동</td>
-<td align="center">논리수학</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20143510</td>
-<td align="center">중하</td>
-<td align="center">상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">논리수학</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20153517</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">논리수학</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20113124</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="even">
-<td align="center">20123829</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-<td align="center">언어</td>
-</tr>
-<tr class="odd">
-<td align="center">20132121</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">언어</td>
-</tr>
-<tr class="even">
-<td align="center">20134227</td>
-<td align="center">중하</td>
-<td align="center">상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20163022</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20121521</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20133827</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">공간</td>
-<td align="center">언어</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20133914</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">공간</td>
-<td align="center">언어</td>
-<td align="center">논리수학</td>
-</tr>
-<tr class="odd">
-<td align="center">20156253</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">논리수학</td>
-<td align="center">공간</td>
-</tr>
-<tr class="even">
-<td align="center">20151525</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20154237</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">20151139</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20135233</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">신체운동</td>
-<td align="center">논리수학</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="even">
-<td align="center">20133832</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">공간</td>
-<td align="center">인간친화</td>
-<td align="center">언어</td>
-</tr>
-<tr class="odd">
-<td align="center">20155423</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">논리수학</td>
-<td align="center">공간</td>
-</tr>
-<tr class="even">
-<td align="center">20163029</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">공간</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="odd">
-<td align="center">20156266</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-<td align="center">음악</td>
-</tr>
-<tr class="even">
-<td align="center">20103932</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20154244</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">언어</td>
-</tr>
-<tr class="even">
-<td align="center">20151528</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20122904</td>
-<td align="center">상</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20123526</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="odd">
-<td align="center">20156271</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20163134</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">자기성찰</td>
-<td align="center">신체운동</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20156153</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">공간</td>
-<td align="center">신체운동</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20156284</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">공간</td>
-<td align="center">논리수학</td>
-<td align="center">자기성찰</td>
-</tr>
-<tr class="odd">
-<td align="center">20154256</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20112356</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">언어</td>
-<td align="center">논리수학</td>
-</tr>
-<tr class="odd">
-<td align="center">20143155</td>
-<td align="center">하</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자연친화</td>
-<td align="center">자기성찰</td>
-<td align="center">인간친화</td>
-</tr>
-<tr class="even">
-<td align="center">20154259</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">논리수학</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20153530</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-<td align="center">음악</td>
-</tr>
-<tr class="even">
-<td align="center">20154261</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-<td align="center">인간친화</td>
-</tr>
-<tr class="odd">
-<td align="center">20123940</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">자연친화</td>
-</tr>
-<tr class="even">
-<td align="center">20135354</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">자연친화</td>
-<td align="center">자기성찰</td>
-<td align="center">음악</td>
-</tr>
-<tr class="odd">
-<td align="center">20142935</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-<td align="center">NA</td>
-</tr>
-<tr class="even">
-<td align="center">20156298</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">상</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">자연친화</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20152934</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">자기성찰</td>
-<td align="center">신체운동</td>
-<td align="center">음악</td>
-</tr>
-<tr class="even">
-<td align="center">20154270</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">하</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-</tr>
-<tr class="odd">
-<td align="center">20132146</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">중하</td>
-<td align="center">중상</td>
-<td align="center">중하</td>
-<td align="center">자기성찰</td>
-<td align="center">공간</td>
-<td align="center">신체운동</td>
-</tr>
-<tr class="even">
-<td align="center">20123173</td>
-<td align="center">중상</td>
-<td align="center">중상</td>
-<td align="center">하</td>
-<td align="center">하</td>
-<td align="center">중하</td>
-<td align="center">언어</td>
-<td align="center">인간친화</td>
-<td align="center">자기성찰</td>
-</tr>
-</tbody>
-</table>
+<pre class="r"><code>BFI.MI.full &lt;- data.frame(BFI.full.kr, MI.sort.full.kr[, 3:5])
+# pander(BFI.MI.full[, -2])</code></pre>
 <p>이름을 빼고 학번만 표시</p>
-<pre class="r"><code>BFI.MI.full.ID&lt;-BFI.MI.full[,-2]
+<pre class="r"><code>BFI.MI.full.ID &lt;- BFI.MI.full[, -2]
 pander(BFI.MI.full.ID)</code></pre>
 <table>
 <colgroup>
@@ -7955,9 +7230,8 @@ pander(BFI.MI.full.ID)</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="-" class="section level2">
-<h2>결석생 확인</h2>
+<div id="-" class="section level4">
+<h4>결석생 확인</h4>
 <p>BFI결석생</p>
 <pre><code>## [1]  5  6 15 19 35 46 59</code></pre>
 <pre><code>## [1] 20122809 20154204 20154208 20102837 20154237 20123526 20142935</code></pre>
@@ -7966,6 +7240,7 @@ pander(BFI.MI.full.ID)</code></pre>
 <pre><code>## [1]  5  6 15 19 35 46 59</code></pre>
 <pre><code>## [1] 20122809 20154204 20154208 20102837 20154237 20123526 20142935</code></pre>
 <pre><code>## [1] &quot;길종민&quot; &quot;김기원&quot; &quot;김예본&quot; &quot;김정윤&quot; &quot;유종현&quot; &quot;이정균&quot; &quot;최형은&quot;</code></pre>
+</div>
 </div>
 
 

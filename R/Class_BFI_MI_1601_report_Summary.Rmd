@@ -84,13 +84,15 @@ pander(BFI.level.kr.2)
 ```
 
 각 성질의 분포를 `table`로 요약
+-->
 
-```{r}
-BFI.level.table<-sapply(BFI.level.kr, table)
-pander(BFI.level.table)
+```{r, echo = FALSE}
+BFI.level.table <- sapply(BFI.level.kr, table)
+# pander(BFI.level.table)
 kable(BFI.level.table)
 ```
 
+<!--
 출석부에 합치기
 ---------------
 
