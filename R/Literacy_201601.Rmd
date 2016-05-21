@@ -26,7 +26,7 @@ panderOptions('digits', 3)
 ```
 
 ```{r, read data, echo = FALSE, results = 'hide'}
-literacy <- read.xlsx("../data/literacy_RnB0308.xlsx", 1, startRow = 2, endRow  = 66, colIndex = 20:45, colClasses=c(rep("character", 26)), header = TRUE)
+literacy <- read.xlsx("../data/literacy_RnB0309.xlsx", 1, startRow = 2, endRow  = 66, colIndex = 20:45, colClasses=c(rep("character", 26)), header = TRUE)
 names(literacy) <- c(paste("Q", 1:25, sep=""), "group")
 literacy$group <- factor(literacy$group, levels = c("Red", "Black"))
 str(literacy)
