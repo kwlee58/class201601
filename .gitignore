@@ -2,4 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
 ./R/rsconnect/
+./R/*.html
+./R/*.rda
+./data/*~
