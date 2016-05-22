@@ -18,14 +18,22 @@ panderOptions('table.alignment.default', 'right')
 options(width = 180)
 ```
 
-```{r, data, echo = FALSE, results = 'hide'}
+```{r, data, echo = TRUE, results = 'markup'}
 quiz0518 <- read.xlsx("../data/quiz0518.xlsx", 1, startRow = 2, endRow = 66, colIndex = c(3:7, 9:14), colClasses = c(rep("character", 11)), stringsAsFactors = FALSE)
 str(quiz0518)
 names(quiz0518) <- c("dept", "id", "name", "year", "e.mail", "cell.no", "Q1", "Q2", "Q3", "Q4", "group")
 quiz0518$dept <- factor(quiz0518$dept)
 quiz0518$year <- factor(quiz0518$year)
 quiz0518$group <- factor(quiz0518$group, levels = c("Red", "Black"))
-quiz0518$Q1 <- factor(quiz0518$Q1, levels = c("가", "나", "다", "라"), labels = c("열에 한명", "열에 세명", "열에 다섯명", "열에 여덟명"))
+birth_month.date <- strsplit(quiz0518$Q1, ",")
+birth_month <- mapply(function(x) x[1], birth_month.date)
+birth_month.f <- factor(birth_month, levels = 1:12)
+# birth_month <- mapply(function(x) `[`(x, 1), birth_month.date)
+table(birth_month.f)
+birthdate <- ifelse(is.na(birth_month.date), NA, mapply(function(x) paste(x[1], "월", x[2], "일", sep = ""), birth_month.date))
+quiz0518$Q1.2 <- birthdate
+dup.b <- duplicated(birthdate)
+birthdate[dup.b]
 quiz0518$Q2 <- factor(quiz0518$Q2, levels = c("가", "나", "다", "라"), labels = c("15%", "25%", "45%", "65%"))
 quiz0518$Q3 <- factor(quiz0518$Q3, levels = c("가", "나", "다", "라"), labels = c("1명", "2명", "3명", "4명"))
 # quiz0518$Q4.2 <- quiz0518$Q4
@@ -45,13 +53,13 @@ str(quiz0518)
 pander(summary(quiz0518))
 ```
 
-### 퀴즈 응답 비교
+### 퀴즈 응답
 
-#### Latane and Darley
+#### Birthday Problem
 
-##### 방관자 효과
+##### 생일이 같은 사람은 몇 명
 
-```{r, bystander, echo = FALSE}
+```{r, birthday problem, echo = FALSE}
 pander(addmargins(table(quiz0518$group, quiz0518$Q1, exclude = NULL), margin = 1)[-3, ])
 ```
 
