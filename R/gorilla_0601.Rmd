@@ -9,12 +9,13 @@ output: html_document
 
 #### Read In
 
-```{r, library and read, echo=FALSE, message=FALSE, results='hide'}
-library(xlsx)
+```{r, library and read, echo = FALSE, message = FALSE, results = 'hide'}
+# library(xlsx)
 library(pander)
 library(ggplot2)
 options(digits=3)
-gorilla <- read.xlsx("../data/gorilla0601.xlsx", 1, startRow = 2, endRow = 66, header = FALSE, colIndex = c(3:7, 9:31), colClasses = c(rep("character", 17), "numeric", "character", "numeric", rep("character", 6), "numeric", "character"))
+# gorilla <- read.xlsx("../data/gorilla0601.xlsx", 1, startRow = 2, endRow = 66, header = FALSE, colIndex = c(3:7, 9:31), colClasses = c(rep("character", 17), "numeric", "character", "numeric", rep("character", 6), "numeric", "character"))
+load("./gorilla_0601.rda")
 str(gorilla)
 ```
 
@@ -57,6 +58,7 @@ pander(table(wrong_diff), caption = "이 사람들은 나하고 생각이")
 pander(table(monkey_panda_banana), caption = "두 개를 고른다면?")
 pander(table(still_happy), caption = "여전히 행복한가요?")
 pander(table(which_one_in_front), caption = "어느 것이 앞쪽에 있나요?")
+pander(table(monkey_panda_banana, which_one_in_front), caption = "원숭이-바나나-팬더 vs 어느 것이 앞쪽에 있나요?")
 pander(table(ames_room), caption = "정상적인 방으로 보이나요?")
 pander(table(reading_1), caption = "이 단어는?")
 pander(table(reading_2), caption = "이것은?")
@@ -79,6 +81,6 @@ pander(summary(chocolate), caption = "몇 개나 줄 거예요?")
 
 ### 자료 갈무리
 
-```{r, save.image, echo=FALSE}
+```{r, save.image, echo = FALSE}
 save.image("gorilla_0601.rda")
 ```
