@@ -25,6 +25,9 @@ str(fb)
 names(fb) <- c("dept", "id", "name", "year", "e.mail", paste("P", 1:11, sep = ""))
 fb$Total <- apply(fb[, -(1:5)], 1, sum, na.rm = TRUE)
 fb$Score <- round(fb$Total*30/11, digits = 1)
+fb.count <- ifelse(is.na(fb[, -c(1:5, 17:18)]), 0, 1)
+colSums(fb.count)
+summary(colSums(fb.count))
 pander(fb[, -c(1, 4, 5)])
 ```
 
