@@ -87,7 +87,7 @@ pander(round(prop.table(addmargins(table(quiz0502$group, quiz0502$Q3, exclude = 
 
 #### 이득과 손실
 
-##### 이득은 완전히 하고, 손실은 피하고자 하는 경향 확인, Red는 손실을 확률적으로 피하려는 게임(B)에 Black은 이득을 완전히 확보하려는 게임(A)를 주로 선택.
+##### 이득은 완전히 하고, 손실은 피하고자 하는 경향 확인. Red는 이득을 완전히 확보하려는 게임(A)에, Black은 손실을 확률적으로 피하려는 게임(B)을 많이 선택.
 
 ```{r, prospect theory, echo = FALSE}
 kable(table(quiz0502$group, quiz0502$Q4, exclude = NULL), caption="손실회피심리")
