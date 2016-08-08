@@ -1,0 +1,80 @@
+---
+title: "Randomization 160509"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("pander", repos = "https://cran.rstudio.com")
+# install.packages("xlsx", repos = "https://cran.rstudio.com")
+library(xlsx)
+library(pander)
+library(knitr)
+panderOptions('table.split.table', Inf)
+panderOptions('table.alignment.rownames', 'left')
+panderOptions('table.alignment.default', 'right')
+```
+
+<!--### Data Randomization-->
+
+```{r, data, echo = FALSE, results = 'hide'}
+simbius <- read.xlsx("../data/simbius.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:4, colClasses=rep("character", 6), stringsAsFactors = FALSE)
+str(simbius)
+# names(simbius) <- c("school", "year", "name", "gender")
+str(simbius)
+```
+
+```{r, randomization, echo = FALSE, results = 'hide'}
+set.seed(73)
+N <- nrow(simbius) 
+red.id <- sample(1:N, size=floor(N/2))
+red.id
+simbius$group <- factor(ifelse((1:N) %in% red.id, "red", "black"), levels = c("red", "black"))
+black.id<-(1:N)[-red.id]
+```
+
+### Randomization Effects
+
+#### 학년 
+
+```{r, year, echo = FALSE}
+year.f <- factor(simbius$year, labels = c("1학년", "2학년"))
+pander(table("Group" = simbius$group, "학년" = year.f))
+```
+
+#### 성별
+
+```{r, gender, echo = FALSE}
+gender.f <- factor(simbius$gender, labels = c("남", "여"))
+pander(table("Group" = simbius$group, "성별" = gender.f))
+```
+
+#### 많이 나오는 성씨
+
+```{r, family name, echo = FALSE}
+f.name <- substring(simbius$name, first = 1, last = 1)
+f.name.f <- factor(ifelse(f.name %in% c("김", "이", "박","최"), f.name, "기타"), levels = c("김", "이", "박", "최", "기타"))
+pander(table("Group" = simbius$group, "Family Name" = f.name.f))
+```
+
+<!--### List of Group Members-->
+
+```{r, list, echo=FALSE, message=FALSE, results='hide'}
+gr.id.o <- order(simbius$group, simbius$school)
+id.by.gr <- simbius[gr.id.o, c("group", "school", "name")]
+red.names <- id.by.gr[id.by.gr$group=="red", c("school", "name")]
+pander(red.names)
+black.names <- id.by.gr[id.by.gr$group=="black", c("school", "name")]
+pander(black.names)
+red.black.df <- data.frame("Red" = red.names, "Black" = black.names, row.names = NULL)
+```
+
+```{r, print_out, echo=FALSE, results = 'asis'}
+pander(red.black.df)
+```
+
+```{r, save, echo=FALSE, message=FALSE, results='hide'}
+save.image("../R/simbius_data.rda")
+```
