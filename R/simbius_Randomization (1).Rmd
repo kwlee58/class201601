@@ -61,8 +61,6 @@ pander(table("Group" = simbius$group, "Family Name" = f.name.f))
 
 <!--### List of Group Members-->
 
-<P style = "page-break-before: always">
-
 ```{r, list, echo=FALSE, message=FALSE, results='hide'}
 gr.id.o <- order(simbius$group, simbius$school)
 id.by.gr <- simbius[gr.id.o, c("group", "school", "name")]
@@ -72,6 +70,8 @@ black.names <- id.by.gr[id.by.gr$group=="black", c("school", "name")]
 pander(black.names)
 red.black.df <- data.frame("Red" = red.names, "Black" = black.names, row.names = NULL)
 ```
+
+<P style="page-break-before: always">
 
 ```{r, print_out, echo=FALSE, results = 'asis'}
 pander(red.black.df)
