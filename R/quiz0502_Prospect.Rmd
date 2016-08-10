@@ -92,13 +92,20 @@ pander(round(prop.table(addmargins(table(quiz0502$group, quiz0502$Q3, exclude = 
 ##### 이득은 완전히 하고, 손실은 피하고자 하는 경향 확인. Red는 이득을 완전히 확보하려는 게임(A)에, Black은 손실을 확률적으로 피하려는 게임(B)을 많이 선택.
 
 ```{r, prospect theory, echo = FALSE}
-kable(table(quiz0502$group, quiz0502$Q4, exclude = NULL), caption="손실회피심리")
+tbl <- table(quiz0502$group, quiz0502$Q4, exclude = NULL)[1:2, ]
+tbl.a <- addmargins(tbl)[1:2, ]
+rownames(tbl.a) <- c("Red(딴다)", "Black(잃는다)")
+colnames(tbl.a) <- c("확실", "불확실", "결석", "계")
+kable(tbl.a, caption = "손실회피심리")
+# kable(table(quiz0502$group, quiz0502$Q4, exclude = NULL), caption="손실회피심리")
 ```
 
 ##### % 비교.  
 
 ```{r, prospect theory  in percentage, echo = FALSE}
 merge.tbl <- table(quiz0502$group, quiz0502$Q4)
+rownames(merge.tbl) <- c("Red(딴다)", "Black(잃는다)")
+colnames(merge.tbl) <- c("확실", "불확실")
 kable(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
 ```
 

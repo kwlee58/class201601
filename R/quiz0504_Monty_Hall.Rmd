@@ -90,10 +90,14 @@ pander(round(prop.table(addmargins(table(quiz0504$group, quiz0504$Q3, exclude = 
 
 #### Switch or not?
 
-##### 염소가 들어있는 문을 보여줌으로써 다른 문에 자동차가 들어 있을 확률은 2/3늘어나므로 바꾸는 것이 적절한 판단임. Red와 Black의 차이는 "바꾼다"와 "고수한다"의 순서를 바꾼 것인데 통계적으로 유의한 차이는 아니지만 Black 집단에서 나.에 배치한 선택을 "고수한다"에 많은 인원이 몰린점이 흥미롭다.  
+##### 염소가 들어있는 문을 보여줌으로써 다른 문에 자동차가 들어 있을 확률은 1/3에서 2/3로 늘어나므로 바꾸는 것이 적절한 판단임. Red와 Black의 차이는 "바꾼다"와 "고수한다"의 순서를 바꾼 것인데 통계적으로 유의한 차이는 발견되지 아니한다.
+
+<!--아니지만 Black 집단에서 나.에 배치한 선택을 "고수한다"에 많은 인원이 몰린점이 흥미롭다.-->  
 
 ```{r, Monty Hall, echo = FALSE}
-kable(table(quiz0504$group, quiz0504$Q4.2, exclude = NULL), caption="Monty Hall")
+tbl <- table(quiz0504$group, quiz0504$Q4.2, exclude = NULL)[1:2, ]
+tbl.a <- addmargins(tbl)
+kable(tbl.a, caption="Monty Hall")
 ```
 
 ##### % 비교.  
@@ -101,6 +105,14 @@ kable(table(quiz0504$group, quiz0504$Q4.2, exclude = NULL), caption="Monty Hall"
 ```{r, Monty Hall in percentage, echo = FALSE}
 merge.tbl <- table(quiz0504$group, quiz0504$Q4.2)
 kable(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
+````
+
+##### 합산
+
+```{r, column sums, echo = FALSE}
+merge.tbl.m <- margin.table(merge.tbl, margin = 2)
+merge.tbl.m.p <- merge.tbl.m / sum(merge.tbl.m)
+pander(round(merge.tbl.m.p*100, digits = 1))
 ```
 
 ```{r, save, echo = FALSE}

@@ -98,7 +98,7 @@ pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = 
 
 ```{r, Framing Effect, echo = FALSE}
 tbl <- table(quiz0516$group, quiz0516$Q4.2, exclude = NULL)
-rownames(tbl) <- c("Red(산다, 모두 살릴)", "Black(죽는다, 모두 죽지 않을)", "NA")
+rownames(tbl) <- c("Red(산다)", "Black(죽는다)", "NA")
 kable(tbl[1:2, ], caption = "Framing Effect")
 ```
 

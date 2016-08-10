@@ -96,7 +96,9 @@ pander(round(prop.table(addmargins(table(quiz0418$group, quiz0418$Q3, exclude = 
 ##### 소득의 절대값이 아니라 상대 비교가 중요하다는 Solnick and Hemenway(1998)의 연구결과와 일치. 랜덤화하였지만 응답에는 차이가 없음.
 
 ```{r, social comparison, echo = FALSE}
-pander(table(quiz0418$group, quiz0418$Q4.2, exclude = NULL), caption="장기기증의사")
+tbl <- table(quiz0418$group, quiz0418$Q4.2, exclude = NULL)[1:2, ]
+tbl.a <- addmargins(tbl)
+pander(tbl.a, caption="장기기증의사")
 ```
 
 ##### % 비교.  
@@ -105,6 +107,15 @@ pander(table(quiz0418$group, quiz0418$Q4.2, exclude = NULL), caption="장기기�
 merge.tbl <- table(quiz0418$group, quiz0418$Q4.2)
 pander(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
 ```
+
+##### 합산
+
+```{r, column sums, echo = FALSE}
+merge.tbl.m <- margin.table(merge.tbl, margin = 2)
+merge.tbl.m.p <- merge.tbl.m / sum(merge.tbl.m)
+pander(round(merge.tbl.m.p*100, digits = 1))
+```
+
 
 ```{r, save, echo = FALSE}
 #save.image("../R/quiz0418.rda")
