@@ -19,7 +19,7 @@ options(width = 180)
 ```
 
 ```{r, data, echo = FALSE, results = 'hide'}
-simbius <- read.xlsx("../data/simbius.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:12, colClasses = c(rep("character", 12)), stringsAsFactors = FALSE)
+simbius <- read.xlsx("../data/simbius_test.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:12, colClasses = c(rep("character", 12)), stringsAsFactors = FALSE)
 str(simbius)
 simbius$Group <- factor(simbius$Group, levels = c("Red", "Black"))
 simbius$Monty <- factor(simbius$Monty, levels = c("가", "나"), labels = c("바꾼다", "고수한다"))
@@ -27,7 +27,7 @@ simbius$World <- factor(simbius$World, levels = c("가", "나"), labels = c("내
 simbius$Wason_1 <- ifelse(simbius$Wason_1 == "A,3", "Right", "Wrong")
 simbius$Wason_2 <- ifelse(simbius$Wason_2 == "Beer,17", "Right", "Wrong")
 simbius$Prospect <- factor(simbius$Prospect, levels = c("가", "나"), labels = c("100%", "90%"))
-simbius$Framing <- factor(simbius$Framing, levels = c("가", "나"), labels = c("확정", "확률"))
+simbius$Framing <- factor(simbius$Framing, levels = c("가", "나"), labels = c("200명/400명(확정)", "확률"))
 simbius$Default <- ifelse(is.na(simbius$Default), "빈칸", simbius$Default)
 simbius$Default.2 <- simbius$Default
 Red <- simbius$Group == "Red"
@@ -38,7 +38,7 @@ simbius$Default.2[Black & simbius$Default.2 == "빈칸"] <- "없음"
 simbius$Default.2[Black & simbius$Default.2 == "예"] <- "있음"
 simbius$Default.2[simbius$Default.2 == "NA"] <- NA
 simbius$Default.2 <- factor(simbius$Default.2, level = c("있음", "없음"))
-simbius$Default
+simbius$Default.2
 str(simbius)
 ```
 

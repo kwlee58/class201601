@@ -99,13 +99,16 @@ pander(round(prop.table(addmargins(table(quiz0411$group, quiz0411$Q3, exclude = 
 ##### 표시하지 않으면 장기 기증의사가 있는 것으로 간주하는 경우(Red)와 표시하면 장기 기증의사가 있는 것으로 간주하는 경우(Black), 표시하지 않으면 기증의사가 있다고 보는 질문지에 기증의사가 더 높게 나온다는 것에 유의. 어디다 디폴트를 두느냐에 따라 조사결과가 달라짐.
 
 ```{r, vote attitude, echo = FALSE}
-pander(table(quiz0411$group, quiz0411$Q4.2, exclude = NULL), caption="장기기증의사")
+tbl.D <- table(quiz0411$group, quiz0411$Q4.2, exclude = NULL)[1:2, ]
+rownames(tbl.D) <- c("Red(없으면 표시)", "Black(있으면 표시)")
+pander(tbl.D, caption="장기기증의사")
 ```
 
 ##### % 비교.  
 
 ```{r, vote attitude in percentage, echo = FALSE}
 merge.tbl <- table(quiz0411$group, quiz0411$Q4.2)
+rownames(merge.tbl) <- c("Red(없으면 표시)", "Black(있으면 표시)")
 pander(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
 ```
 

@@ -19,7 +19,7 @@ options(width = 180)
 ```
 
 ```{r, data, echo = FALSE, results = 'hide'}
-simbius <- read.xlsx("../data/simbius.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:12, colClasses = c(rep("character", 12)), stringsAsFactors = FALSE)
+simbius <- read.xlsx("../data/simbius_0809.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:12, colClasses = c(rep("character", 12)), stringsAsFactors = FALSE)
 str(simbius)
 simbius$Group <- factor(simbius$Group, levels = c("Red", "Black"))
 simbius$Monty <- factor(simbius$Monty, levels = c("가", "나"), labels = c("바꾼다", "고수한다"))
@@ -109,5 +109,5 @@ kable(tbl.D[1:2, ], caption = "장기기증의사")
 ```
 
 ```{r, save, echo = FALSE}
-#save.image("../R/simbius.rda")
+save.image("../R/simbius.rda")
 ```

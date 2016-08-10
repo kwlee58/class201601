@@ -140,6 +140,7 @@ wason_1 <- tbl.q3.a[1, ] + tbl.q4.a[2, ]
 wason_2 <- tbl.q3.a[2, ] + tbl.q4.a[1, ]
 wason.tbl <- as.table(rbind(wason_1, wason_2))
 rownames(wason.tbl) <- c("Wason 1(추상적 질문)", "Wason 2(구체적 질문)")
+colnames(wason.tbl) <- c("정답", "오답", "결석")
 kable(wason.tbl, caption = "Wason Selection")
 ```
 
