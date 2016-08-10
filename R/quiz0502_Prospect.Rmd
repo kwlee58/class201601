@@ -1,5 +1,5 @@
 ---
-title: "Quiz 160502"
+title: "Prospect"
 author: "coop711"
 date: "`r Sys.Date()`"
 output: html_document
@@ -39,6 +39,7 @@ str(quiz0502)
 pander(summary(quiz0502))
 ```
 
+<!--
 ### 퀴즈 응답 비교
 
 #### 소득 상위1%의 몫과 시대적 사건들
@@ -84,6 +85,7 @@ pander(round(prop.table(addmargins(table(quiz0502$group, quiz0502$Q3, exclude = 
 ```
 
 ### Prospect Theory
+-->
 
 #### 이득과 손실
 

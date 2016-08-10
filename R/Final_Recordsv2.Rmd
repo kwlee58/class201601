@@ -107,7 +107,8 @@ names(total.kr) <- v.names.kr
 my.grade <- function(name){
   kable(total.kr[total$Name %in% name, -1], row.names = FALSE)
 }
-my.grade(c("홍민기", "이재훈"))
+my.grade(c("홍민기", "이재훈", "김성현"))
+# my.grade("김성현")
 ```
 
 <!--### Save Data
