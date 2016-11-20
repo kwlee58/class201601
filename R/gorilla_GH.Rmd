@@ -1,0 +1,151 @@
+---
+title: "Invisible Gorilla Goheung 2016"
+author: "coop711"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+<!--
+### Data
+
+#### Read In
+
+```{r, library and read, echo = FALSE, message = FALSE, results = 'hide'}
+library(xlsx)
+library(pander)
+library(ggplot2)
+options(digits=3)
+gorilla <- read.xlsx("../data/gorilla_goheung.xlsx", 1, startRow = 2, endRow = 38, header = FALSE, colIndex = c(1:13), colClasses = c(rep("character", 3), "numeric", "character", "numeric", rep("character", 4), "numeric", "character", "numeric"))
+# load("./gorilla_0601.rda")
+str(gorilla)
+```
+
+#### Management
+
+```{r, data restructuring, echo = FALSE, results='hide'}
+names(gorilla) <- c("Q1.1", "Q1.2", "Q1.3", "Q2.1", "Q2.2", "Q3.1", "Q3.2", "Q3.3", "Q3.4", "Q4", "Q5", "Q6", "Q7")
+str(gorilla)
+# wrong_diff <- factor(gorilla$Q1, levels = c("가", "나"), labels = c("틀리다", "다르다"))
+monkey_panda_banana <- factor(gorilla$Q1.1, levels = c("가", "나", "다"), labels = c("원숭이와 바나나", "원숭이와 팬더", "팬더와 바나나"))
+still_happy <- factor(gorilla$Q1.2, levels = c("가", "나"), labels = c("행복해 보인다", "행복해 보이지 않는다"))
+which_one_in_front <- factor(gorilla$Q1.3, levels = c("가", "나", "다"), labels = c("맨 위의 비행접시", "중간 위치 비행접시", "맨 아래 비행접시"))
+pass_1.1 <- gorilla$Q2.1
+pass_1.2 <- factor(gorilla$Q2.2, levels = c("가", "나"), labels = c("보았다", "못 보았다"))
+pass_2.1 <- gorilla$Q3.1
+pass_2.2 <- factor(gorilla$Q3.2, levels = c("가", "나"), labels = c("보았다", "못 보았다"))
+pass_2.3 <- factor(gorilla$Q3.3, levels = c("가", "나"), labels = c("보았다", "못 보았다"))
+pass_2.4 <- factor(gorilla$Q3.4, levels = c("가", "나"), labels = c("보았다", "못 보았다"))
+door_study <- factor(gorilla$Q4, levels = c("가", "나"), labels = c("알아차렸다", "몰랐다"))
+# stereotype <- factor(gorilla$Q8, levels = c("가", "나"), labels = c("무시한다", "팻말에 따른다"))
+# prejudice <- factor(gorilla$Q9, levels = c("가", "나", "다"), labels = c("동등하게", "백인 우호", "동남아인 우호"))
+chocolate <- gorilla$Q5
+ls()
+```
+-->
+
+### 응답 결과
+
+<!--
+#### 다르다와 틀리다
+
+```{r, responses, echo = FALSE}
+# tbl.wrong_diff <- table(wrong_diff)
+# pander(tbl.wrong_diff, caption = "이 사람들은 나하고 생각이")
+# pander(t(matrix(paste(format(prop.table(tbl.wrong_diff)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = #dim(tbl.wrong_diff)[1], dimnames = dimnames(tbl.wrong_diff))))
+```
+-->
+
+#### 동과 서
+
+```{r, East vs West, echo = FALSE}
+tbl.monkey_panda_banana <- table(monkey_panda_banana)
+pander(tbl.monkey_panda_banana, caption = "두 개를 고른다면?")
+pander(t(matrix(paste(format(prop.table(tbl.monkey_panda_banana)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.monkey_panda_banana)[1], dimnames = dimnames(tbl.monkey_panda_banana))))
+tbl.still_happy <- table(still_happy)
+pander(tbl.still_happy, caption = "여전히 행복한가요?")
+pander(t(matrix(paste(format(prop.table(tbl.still_happy)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.still_happy)[1], dimnames = dimnames(tbl.still_happy))))
+tbl.which_one_in_front <- table(which_one_in_front)
+pander(tbl.which_one_in_front, caption = "어느 것이 앞쪽에 있나요?")
+pander(t(matrix(paste(format(prop.table(tbl.which_one_in_front)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.which_one_in_front)[1], dimnames = dimnames(tbl.which_one_in_front))))
+tbl.monkey_panda_banana.which_one_in_front <- table(monkey_panda_banana, which_one_in_front)
+pander(tbl.monkey_panda_banana.which_one_in_front, caption = "원숭이-바나나-팬더 vs 어느 것이 앞쪽에 있나요?")
+pander(t(matrix(paste(format(prop.table(tbl.monkey_panda_banana.which_one_in_front)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.monkey_panda_banana.which_one_in_front)[1], dimnames = dimnames(tbl.monkey_panda_banana.which_one_in_front))))
+```
+
+<!--
+#### 감각의 한계
+
+```{r, Illusion, echo = FALSE}
+# pander(table(ames_room), caption = "정상적인 방으로 보이나요?")
+# pander(table(reading_1), caption = "이 단어는?")
+# pander(table(reading_2), caption = "이것은?")
+# pander(table(reading_3), caption = "이 문구는?")
+# pander(table(reading_4), caption = "이 문구는?")
+# pander(table(reading_5), caption = "이 간판 문구는?")
+# pander(table(reading_6), caption = "이 영어자막은?")
+```
+-->
+
+#### Selective Attention Test
+
+```{r, SAT, echo = FALSE}
+pander(table(pass_1.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
+tbl.pass_1.2 <- table(pass_1.2)
+pander(tbl.pass_1.2, caption = "고릴라 본 사람?")
+pander(t(matrix(paste(format(prop.table(tbl.pass_1.2)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_1.2)[1], dimnames = dimnames(tbl.pass_1.2))))
+```
+
+#### Monkey Business Illusion
+
+```{r, MBI, echo = FALSE}
+pander(table(pass_2.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
+tbl.pass_2.2 <- table(pass_2.2)
+pander(tbl.pass_2.2, caption = "고릴라 본 사람?")
+pander(t(matrix(paste(format(prop.table(tbl.pass_2.2)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_2.2)[1], dimnames = dimnames(tbl.pass_2.2))))
+tbl.pass_2.3 <- table(pass_2.3)
+pander(tbl.pass_2.3, caption = "커튼 색 바뀐 것 본 사람?")
+pander(t(matrix(paste(format(prop.table(tbl.pass_2.3)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_2.3)[1], dimnames = dimnames(tbl.pass_2.3))))
+tbl.pass_2.4 <- table(pass_2.4)
+pander(tbl.pass_2.4, caption = "선수 나가는 것 본 사람?")
+pander(t(matrix(paste(format(prop.table(tbl.pass_2.4)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_2.4)[1], dimnames = dimnames(tbl.pass_2.4))))
+```
+
+#### Door Study
+
+```{r, door study, echo = FALSE}
+tbl.door_study <- table(door_study)
+pander(tbl.door_study, caption = "처음부터 알아차렸나요?")
+pander(t(matrix(paste(format(prop.table(tbl.door_study)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.door_study)[1], dimnames = dimnames(tbl.door_study))))
+```
+
+<!--
+#### 고정관념
+
+```{r, stereotypes, echo = FALSE}
+# tbl.stereotype <- table(stereotype)
+# pander(tbl.stereotype, caption = "나라면?")
+# pander(t(matrix(paste(format(prop.table(tbl.stereotype)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.stereotype)[1], dimnames = dimnames(tbl.stereotype))))
+```
+
+#### 편견
+
+```{r, prejudices, echo = FALSE}
+# tbl.prejudice <- table(prejudice)
+# pander(tbl.prejudice, caption = "How do I go to COEX?")
+# pander(t(matrix(paste(format(prop.table(tbl.prejudice)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.prejudice)[1], dimnames = dimnames(tbl.prejudice))))
+```
+-->
+
+#### Chocolate 실험
+
+```{r, chocolate, echo = FALSE}
+pander(table(chocolate), caption = "몇 개나 줄 거예요?")
+pander(summary(chocolate), caption = "몇 개나 줄 거예요?")
+```
+
+
+### 자료 갈무리
+
+```{r, save.image, echo = FALSE}
+save.image("gorilla_GH_2016.RData")
+```

@@ -53,7 +53,6 @@ str(quiz0509)
 pander(summary(quiz0509))
 ```
 
-<!--
 ### Salk Vaccine Field Trial
 
 #### Randomized Placebo Control Approach의 특징 
@@ -133,7 +132,6 @@ kable(percentage.tbl.q4.a, caption = "Wason Selection 1 in Black")
 #### 합산
 
 ##### 집계표
--->
 
 ```{r, Wason Selection, echo = FALSE}
 wason_1 <- tbl.q3.a[1, ] + tbl.q4.a[2, ]

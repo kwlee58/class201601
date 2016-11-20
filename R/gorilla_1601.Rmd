@@ -95,7 +95,7 @@ pander(table(reading_6), caption = "이 영어자막은?")
 #### Selective Attention Test
 
 ```{r, SAT, echo = FALSE}
-pander(summary(pass_1.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
+pander(table(pass_1.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
 tbl.pass_1.2 <- table(pass_1.2)
 pander(tbl.pass_1.2, caption = "고릴라 본 사람?")
 pander(t(matrix(paste(format(prop.table(tbl.pass_1.2)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_1.2)[1], dimnames = dimnames(tbl.pass_1.2))))
@@ -104,7 +104,7 @@ pander(t(matrix(paste(format(prop.table(tbl.pass_1.2)*100, digits = 3, nsmall = 
 #### Monkey Business Illusion
 
 ```{r, MBI, echo = FALSE}
-pander(summary(pass_2.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
+pander(table(pass_2.1), caption = "흰 셔츠 팀의 패스 성공횟수는?")
 tbl.pass_2.2 <- table(pass_2.2)
 pander(tbl.pass_2.2, caption = "고릴라 본 사람?")
 pander(t(matrix(paste(format(prop.table(tbl.pass_2.2)*100, digits = 3, nsmall = 1), "%", sep = ""), nrow = dim(tbl.pass_2.2)[1], dimnames = dimnames(tbl.pass_2.2))))
