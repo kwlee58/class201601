@@ -21,7 +21,7 @@ options(width = 180)
 ```{r, data, echo = FALSE, results = 'hide'}
 simbius <- read.xlsx("../data/simbius_0809.xlsx", 1, startRow = 2, endRow = 22, colIndex = 1:12, colClasses = c(rep("character", 12)), stringsAsFactors = FALSE)
 str(simbius)
-simbius$Group <- factor(simbius$Group, levels = c("Red", "Black"))
+simbius$Group <- factor(simbius$Group, levels = c("Red", "Black"),labels = c("Black", "Red"))
 simbius$Monty <- factor(simbius$Monty, levels = c("가", "나"), labels = c("바꾼다", "고수한다"))
 simbius$World <- factor(simbius$World, levels = c("가", "나"), labels = c("내가 남보다", "남이 나보다"))
 simbius$Wason_1 <- ifelse(simbius$Wason_1 == "A,3", "Right", "Wrong")
