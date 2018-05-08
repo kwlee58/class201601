@@ -18,7 +18,9 @@ panderOptions('table.alignment.default', 'right')
 options(width = 180)
 ```
 
+<!--
 ### Data 
+-->
 
 ```{r, data, echo = FALSE, results = 'hide'}
 food0525 <- read.xlsx("../data/food_survey0525.xlsx", 1, startRow = 2, endRow = 66, colIndex = c(3:7, 9:30), colClasses = c(rep("character", 6), rep("numeric", 20), "character"), stringsAsFactors = FALSE)
@@ -46,10 +48,19 @@ pander(food0525[c("id", "score", "grade")])
 
 ```{r, cross table, echo = FALSE}
 food.tbl <- table(food0525$group, food0525$grade, exclude = NULL)
-food.tbl.a <- addmargins(food.tbl)[-3, ]
-colnames(food.tbl.a)[5] <- "계"
+food.tbl.a <- addmargins(food.tbl)
+colnames(food.tbl.a)[4:5] <- c("결석", "계")
 rownames(food.tbl.a)[3] <- "계"
 pander(food.tbl.a)
+```
+
+#### Percentages
+
+```{r, echo = FALSE}
+food.p <- round(food.tbl.a[3, -(4:5)] / sum(food.tbl.a[3, -(4:5)]) * 100, digits = 2)
+food.p <- c(food.p, sum(food.p))
+names(food.p)[4] <- "계"
+pander(food.p)
 ```
 
 #### Summary Statistics

@@ -89,7 +89,7 @@ pander(BFI.level.kr.2)
 ```{r, echo = FALSE}
 BFI.level.table <- sapply(BFI.level.kr, table)
 # pander(BFI.level.table)
-kable(BFI.level.table)
+kable(BFI.level.table[4:1, ])
 ```
 
 <!--
@@ -123,12 +123,10 @@ detach(BFI)
 
 ```{r}
 A<-matrix(numeric(0), nrow=nrow(MI), ncol=8)
-for(j in 1:8) {
-A[, j] <- MI[ , j + 1]
+for(j in 1:8) {A[,j]<-MI[,j+1]
 for(i in 1:6) {
-A[, j] <- A[ , j] + MI[ , j + 1 + i * 8]
-}
-}
+A[,j]<-A[,j]+MI[, j+i*8]
+}}
 MI.score.kr<-A
 MI.names.kr<-c("음악", "신체운동", "논리수학", "공간", "언어", "인간친화", "자기성찰", "자연친화")
 dimnames(MI.score.kr)<-list(MI$ID, MI.names.kr)
@@ -177,7 +175,7 @@ pander(BFI.MI.full[, -2])
 이름을 빼고 학번만 표시
 -->
 
-```{r, ids only to show, echo = FALSE}
+```{r, ids only to show, echo = FALSE, results = "hide"}
 BFI.MI.full.ID<-BFI.MI.full[,-2]
 pander(BFI.MI.full.ID)
 ```

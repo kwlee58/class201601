@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # install.packages("pander", repos = "https://cran.rstudio.com")
 # install.packages("xlsx", repos = "https://cran.rstudio.com")
 library(xlsx)
-library(readxl)
+
 library(pander)
 library(knitr)
 panderOptions('table.split.table', Inf)
