@@ -31,13 +31,9 @@ quiz0516$Q3 <- factor(quiz0516$Q3, levels = c("가", "나", "다", "라"), label
 # quiz0516$Q4.2 <- quiz0516$Q4
 Black <- quiz0516$group == "Black"
 Red <- quiz0516$group == "Red"
-# quiz0516$Q4.2[quiz0516$group == "Black" & quiz0516$Q4 == "가"] <- "400명은 죽는다"
-# quiz0516$Q4.2[quiz0516$group == "Black" & quiz0516$Q4 == "나"] <- "모두 사망 않을 확률 1/3"
-# quiz0516$Q4.2[quiz0516$group == "Red" & quiz0516$Q4 == "가"] <- "200명은 살린다"
-# quiz0516$Q4.2[quiz0516$group == "Red" & quiz0516$Q4 == "나"] <- "모두 살릴 확률 1/3"
-# quiz0516$Q4.2 <- quiz0516$Q4
-quiz0516$Q4.2[Red] <- ifelse(quiz0516$Q4[Red] == "가", "200명/400명", ifelse(quiz0516$Q4[Red] == "나", "확률 1/3", NA))
-quiz0516$Q4.2[Black] <- ifelse(quiz0516$Q4[Black] == "가", "200명/400명", ifelse(quiz0516$Q4[Black] == "나", "확률 1/3", NA))
+quiz0516$Q4.2[Red] <- ifelse(quiz0516$Q4[Red] == "가", "확실히", ifelse(quiz0516$Q4[Red] == "나", "확률적으로", NA))
+quiz0516$Q4.2[Black] <- ifelse(quiz0516$Q4[Black] == "가", "확실히", ifelse(quiz0516$Q4[Black] == "나", "확률적으로", NA))
+quiz0516$Q4.2 <- factor(quiz0516$Q4.2, levels = c("확실히", "확률적으로"))
 str(quiz0516)
 ```
 
@@ -58,7 +54,7 @@ pander(addmargins(table(quiz0516$group, quiz0516$Q1, exclude = NULL), margin = 1
 ##### 방관자 효과(%)
 
 ```{r, bystander in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q1, exclude = NULL), margin=1), margin=1)[4,]*100, digits=1), caption = "방관자 효과")
+pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q1, exclude = NULL), margin=1), margin=1)[3,]*100, digits=1), caption = "방관자 효과")
 ```
 
 #### Stanley Milgram
@@ -72,7 +68,7 @@ pander(addmargins(table(quiz0516$group, quiz0516$Q2, exclude = NULL), margin = 1
 ##### 450V까지 누르는 사람 (%)
 
 ```{r, obedience in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q2, exclude = NULL), margin = 1), margin = 1)[4, ]*100, digits = 1), caption = "스탬리 밀그램 : 복종")
+pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q2, exclude = NULL), margin = 1), margin = 1)[3, ]*100, digits = 1), caption = "스탬리 밀그램 : 복종")
 ```
 
 #### Solomon Asch
@@ -86,7 +82,7 @@ pander(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = NULL), margin = 1
 ##### Power of 3 (%)
 
 ```{r, Power of 3 in percentage, echo = FALSE}
-pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = NULL), margin = 1), margin = 1)[4, ]*100, digits = 1), caption = "Power of 3")
+pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = NULL), margin = 1), margin = 1)[3, ]*100, digits = 1), caption = "Power of 3")
 ```
 
 ### Framing Effect
@@ -97,7 +93,7 @@ pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = 
 
 ```{r, Framing Effect, echo = FALSE}
 tbl <- table(quiz0516$group, quiz0516$Q4.2, exclude = NULL)
-rownames(tbl) <- c("Red(산다, 모두 살릴)", "Black(죽는다, 모두 죽지 않을)", "NA")
+rownames(tbl) <- c("생존 프레임", "사망 프레임")
 kable(tbl[1:2, ], caption = "Framing Effect")
 ```
 
