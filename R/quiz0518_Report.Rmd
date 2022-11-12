@@ -64,38 +64,30 @@ pander(quiz0518[c("Q3", "Q3.2", "Q4", "Q4.2", "group")])
 pander(summary(quiz0518))
 ```
 
-## 퀴즈 응답
+# 퀴즈 응답
 
-### Birthday Problem
+## Birthday Problem
 
-#### 생일이 같은 사람은 몇 명?
+### 생일이 같은 사람은 몇 명?
 
 ```{r, birthday problem, echo = FALSE}
 dup.b.df <- quiz0518[index.dup.b, c("id", "Q1.2", "group")]
 names(dup.b.df) <- c("학번", "생일", "그룹")
-pander(dup.b.df)
+pander(dup.b.df[, -1], row.names = FALSE)
 ```
 
-#### 생일이 같은 사람은 몇 명 정도 기대되는가?
-
-$N$을 전체 인원이라 할 때, 기대 인원은 $N\times\{1- (\frac{364}{365})^{N-1}\}$로 계산된다.
-무응답이거나 결석한 학생을 제외한 응답 인원 56명에 대하여 기대인원을 계산하면
+### 생일이 같은 사람은 몇 명 정도 기대되는가?
 
 ```{r, echo = FALSE}
 options(digits = 3)
+N <- 56
 E_N <- function(N){N * (1 - (364 / 365) ^ (N - 1))}
-E_N(56)
-```
-
-이고, 오차는 
-
-```{r, echo = FALSE}
-options(digits = 2)
+# E_N(N)
 V_N <- function(N){N * (1 - (364 / 365) ^ (N - 1)) + N * (N - 1) * (1 - (363 / 365)) ^ (N - 2)}
-sqrt(V_N(56))
+# sqrt(V_N(N))
 ```
 
-이다.
+$N$을 전체 인원이라 할 때, 기대 인원은 $N\times\{1- (\frac{364}{365})^{N-1}\}$로 계산된다. 무응답이거나 결석한 학생을 제외한 응답 인원 `r N`명에 대하여 기대인원을 계산하면 `r round(E_N(N), digits = 1)`명이고, 표준오차는 `r round(sqrt(V_N(N)), digits = 1)` 명이어서 관찰된 인원 5명은 범위 안에 잘 들어간다.
 
 #### 태어난 달의 분포는?
 

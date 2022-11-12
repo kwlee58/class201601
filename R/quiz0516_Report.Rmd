@@ -1,7 +1,7 @@
 ---
 title: "Quiz 160516"
 author: "coop711"
-date: "`r Sys.Date()`"
+date: "2016-05-16"
 output: html_document
 ---
 
@@ -92,6 +92,7 @@ pander(round(prop.table(addmargins(table(quiz0516$group, quiz0516$Q3, exclude = 
 tbl <- table(quiz0516$group, quiz0516$Q4, exclude = NULL)
 rownames(tbl) <- c("생존 프레임", "사망 프레임")
 kable(tbl[1:2, ], caption = "Framing Effect")
+pander(chisq.test(tbl[1:2, 1:2], simulate.p.value = TRUE))
 ```
 
 ##### % 비교.  
