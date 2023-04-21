@@ -98,6 +98,7 @@ pander(round(prop.table(addmargins(table(quiz0504$group, quiz0504$Q3, exclude = 
 tbl <- table(quiz0504$group, quiz0504$Q4.2, exclude = NULL)[1:2, ]
 tbl.a <- addmargins(tbl)
 kable(tbl.a, caption="Monty Hall")
+pander(chisq.test(tbl.a[1:2, 1:2]))
 ```
 
 ##### % 비교.  
@@ -105,7 +106,7 @@ kable(tbl.a, caption="Monty Hall")
 ```{r, Monty Hall in percentage, echo = FALSE}
 merge.tbl <- table(quiz0504$group, quiz0504$Q4.2)
 kable(round(prop.table(merge.tbl, margin = 1)*100, digits = 1))
-````
+```
 
 ##### 합산
 
